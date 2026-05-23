@@ -1,3 +1,4 @@
+import traceback
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import (
@@ -8,7 +9,7 @@ from aiogram.types import (
 
 import asyncio
 
-TOKEN = "8096940037:AAFwh8N1eEs_QGvR3STISMFJWfFsalbsuqM"
+TOKEN = "8096940037:AAHHtT7eu7JnFw2YTKN3x-CbpXc9_54F9A4"
 
 # ID группы
 GROUP_CHAT_ID = -1003903288148
@@ -116,9 +117,12 @@ async def forward_question_handler(message: Message):
 
 
 async def main():
-
+    print("BOT STARTING")
     await dp.start_polling(bot)
 
-
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print("CRASH:")
+        traceback.print_exc()
