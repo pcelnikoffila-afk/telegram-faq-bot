@@ -96,9 +96,9 @@ async def handle(request):
     try:
         data = await request.json()
 
-        print("UPDATE RECEIVED:", data)
+        print("RAW UPDATE:", data)
 
-        update = Update.model_validate(data)
+        update = Update(**data)   # ВАЖНО: НЕ model_validate
 
         await dp.feed_update(bot, update)
 
@@ -106,8 +106,7 @@ async def handle(request):
 
     except Exception as e:
         print("WEBHOOK ERROR:", repr(e))
-        raise
-
+        return web.Response(text="ERROR", status=500)
 
 app = web.Application()
 app.router.add_post(WEBHOOK_PATH, handle)
