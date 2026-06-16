@@ -89,11 +89,24 @@ async def on_shutdown(app):
     await bot.session.close()
 
 
+
+from aiogram.types import Update
+
 async def handle(request):
-    data = await request.json()
-    update = dp.update.model_validate(data)
-    await dp.feed_update(bot, update)
-    return web.Response()
+    try:
+        data = await request.json()
+
+        print("UPDATE RECEIVED:", data)
+
+        update = Update.model_validate(data)
+
+        await dp.feed_update(bot, update)
+
+        return web.Response(text="OK")
+
+    except Exception as e:
+        print("WEBHOOK ERROR:", repr(e))
+        raise
 
 
 app = web.Application()
